@@ -16,6 +16,20 @@ public class PlaylistRekursif {
         return list[n - 1].getDurasi() + totalDurasi(list, n - 1);
     }
 
+    /*
+    * Tujuan fungsi : menampilkan daftar lagu dari akhir ke awal secara rekursif.
+    * Base case     : index < 0, proses berhenti.
+    * Recursive case: menampilkan lagu pada index saat ini, kemudian memanggil fungsi untuk index sebelumnya.
+    * Kompleksitas  : O(n), karena setiap lagu diproses satu kali.
+    */
+    static void tampilkanMundur(Lagu[] list, int index) {
+        if (index < 0) {
+            return;
+        }
+        System.out.println((index + 1) + ". " + list[index].getJudul());
+        tampilkanMundur(list, index - 1);
+    }
+
     public static void main(String[] args) {
         // data dummy buat testing bagianku (nanti diganti sama hasil integrasi)
         Lagu[] playlist = {
@@ -35,6 +49,8 @@ public class PlaylistRekursif {
         System.out.println("Total durasi : " + String.format("%.2f", total) + " menit");
         System.out.println("Execution Time (totalDurasi): "
                 + String.format("%.3f", (selesai - mulai) / 1_000_000.0) + " ms");
+        System.out.println("\nDaftar lagu (ditampilkan terbalik):"); // Menampilkan judul daftar lagu dengan urutan terbalik.
+        tampilkanMundur(playlist, playlist.length - 1); // Memanggil fungsi tampilkanMundur() mulai dari indeks terakhir playlist.
     }
 }
 
