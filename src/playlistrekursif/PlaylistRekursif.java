@@ -30,6 +30,21 @@ public class PlaylistRekursif {
         tampilkanMundur(list, index - 1);
     }
 
+    /*
+     * Tujuan fungsi : mencari durasi lagu terpanjang di playlist secara rekursif.
+     * Base case     : index == 0 (tinggal satu lagu), mengembalikan durasi lagu pertama.
+     * Recursive case: membandingkan durasi lagu pada index saat ini dengan hasil
+     *                 cariDurasiTerpanjang untuk index - 1, lalu mengambil yang terbesar (Math.max).
+     * Kompleksitas  : O(n), karena fungsi dipanggil sebanyak n kali dan
+     *                 tiap pemanggilan hanya melakukan 1 perbandingan.
+     */
+    static double cariDurasiTerpanjang(Lagu[] list, int index) {
+        if (index == 0) {
+            return list[0].getDurasi();
+        }
+        return Math.max(list[index].getDurasi(), cariDurasiTerpanjang(list, index - 1));
+    }
+
     public static void main(String[] args) {
         // data dummy buat testing bagianku (nanti diganti sama hasil integrasi)
         Lagu[] playlist = {
@@ -51,6 +66,22 @@ public class PlaylistRekursif {
                 + String.format("%.3f", (selesai - mulai) / 1_000_000.0) + " ms");
         System.out.println("\nDaftar lagu (ditampilkan terbalik):"); // Menampilkan judul daftar lagu dengan urutan terbalik.
         tampilkanMundur(playlist, playlist.length - 1); // Memanggil fungsi tampilkanMundur() mulai dari indeks terakhir playlist.
+
+        long mulaiMax = System.nanoTime();
+        double terpanjang = cariDurasiTerpanjang(playlist, playlist.length - 1);
+        long selesaiMax = System.nanoTime();
+
+        // mencari judul lagu yang durasinya sama dengan durasi terpanjang
+        String judulTerpanjang = "";
+        for (Lagu l : playlist) {
+            if (l.getDurasi() == terpanjang) {
+                judulTerpanjang = l.getJudul() + " - " + l.getArtis();
+            }
+        }
+        System.out.println("\nLagu terpanjang : \"" + judulTerpanjang + "\" ("
+                + String.format("%.2f", terpanjang) + " menit)");
+        System.out.println("Execution Time (cariDurasiTerpanjang): "
+                + String.format("%.3f", (selesaiMax - mulaiMax) / 1_000_000.0) + " ms");
     }
 }
 
